@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'Create Accounts', 'url'=>array('create')),
-	array('label'=>'Manage Accounts', 'url'=>array('admin')),
+	array('label'=>'Manage Accounts', 'url'=>array('manage')),
 );
 ?>
 

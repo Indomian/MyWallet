@@ -3,13 +3,13 @@
 /* @var $model Accounts */
 
 $this->breadcrumbs=array(
-	'Accounts'=>array('index'),
-	'Manage',
+	'Счета'=>array('index'),
+	'Управлять',
 );
 
 $this->menu=array(
-	array('label'=>'List Accounts', 'url'=>array('index')),
-	array('label'=>'Create Accounts', 'url'=>array('create')),
+	array('label'=>'Список счетов', 'url'=>array('index')),
+	array('label'=>'Создать счёт', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,7 +26,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Accounts</h1>
+<h1>Управление счетами</h1>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
@@ -46,7 +46,6 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'user_id',
 		'title',
 		'type',
 		'summ',

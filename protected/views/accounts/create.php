@@ -3,16 +3,16 @@
 /* @var $model Accounts */
 
 $this->breadcrumbs=array(
-	'Accounts'=>array('index'),
-	'Create',
+	'Счета'=>array('index'),
+	'Создание счета',
 );
 
 $this->menu=array(
-	array('label'=>'List Accounts', 'url'=>array('index')),
-	array('label'=>'Manage Accounts', 'url'=>array('admin')),
+	array('label'=>'Список счетов', 'url'=>array('index')),
+	array('label'=>'Управлять счетами', 'url'=>array('manager')),
 );
 ?>
 
-<h1>Create Accounts</h1>
+<h1>Создание счёта</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

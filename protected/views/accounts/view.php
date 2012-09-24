@@ -12,7 +12,7 @@ $this->menu=array(
 	array('label'=>'Create Accounts', 'url'=>array('create')),
 	array('label'=>'Update Accounts', 'url'=>array('update', 'id'=>$model->id)),
 	array('label'=>'Delete Accounts', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Accounts', 'url'=>array('admin')),
+	array('label'=>'Manage Accounts', 'url'=>array('manage')),
 );
 ?>
 

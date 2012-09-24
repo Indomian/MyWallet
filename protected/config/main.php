@@ -31,6 +31,10 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+        'authManager'=>array(
+            'class'=>'CDbAuthManager',
+            'defaultRoles'=>array('Guest'),
+        ),
 		// uncomment the following to enable URLs in path-format
 		'urlManager'=>array(
 			'urlFormat'=>'path',
@@ -42,6 +46,7 @@ return array(
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
+			'showScriptName'=>false
 		),
 		// uncomment the following to use a MySQL database
 		'db'=>array(

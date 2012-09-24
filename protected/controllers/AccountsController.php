@@ -11,46 +11,17 @@ class AccountsController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
-
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
+	public function filters() {
+	    return array_merge(parent::filters(),array(
+	       'postOnly + delete'
+        ));
 	}
 
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
-	{
+	public function actionView($id) {   
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -60,16 +31,12 @@ class AccountsController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
-	{
+	public function actionCreate() {
 		$model=new Accounts;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Accounts']))
-		{
+		if(isset($_POST['Accounts'])) {
 			$model->attributes=$_POST['Accounts'];
+            $model->user_id=Yii::app()->user->id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -84,16 +51,15 @@ class AccountsController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
-	{
+	public function actionUpdate($id) {
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Accounts']))
-		{
+		if(isset($_POST['Accounts'])) {
 			$model->attributes=$_POST['Accounts'];
+            $model->user_id=Yii::app()->user->id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -120,9 +86,12 @@ class AccountsController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Accounts');
+	public function actionIndex() {
+		$dataProvider=new CActiveDataProvider('Accounts',array(
+		      'criteria'=>array(
+		          'condition'=>'user_id='.Yii::app()->user->id
+              )
+        ));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -131,12 +100,12 @@ class AccountsController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionAdmin()
-	{
+	public function actionManage() {
 		$model=new Accounts('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Accounts']))
 			$model->attributes=$_GET['Accounts'];
+        $model->user_id=Yii::app()->user->id;
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -148,10 +117,9 @@ class AccountsController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
-	{
+	public function loadModel($id) {
 		$model=Accounts::model()->findByPk($id);
-		if($model===null)
+		if($model===null || $model->user_id!=Yii::app()->user->id)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}

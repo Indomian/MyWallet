@@ -12,7 +12,7 @@ $this->menu=array(
 	array('label'=>'List Accounts', 'url'=>array('index')),
 	array('label'=>'Create Accounts', 'url'=>array('create')),
 	array('label'=>'View Accounts', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Accounts', 'url'=>array('admin')),
+	array('label'=>'Manage Accounts', 'url'=>array('manage')),
 );
 ?>
 
