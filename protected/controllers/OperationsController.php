@@ -10,46 +10,15 @@ class OperationsController extends Controller {
 	/**
 	 * @return array action filters
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
-
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('@'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
+	public function filters() {
+		return array_merge(parent::filters(),array());
 	}
 
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
-	{
+	public function actionView($id) {
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -59,18 +28,44 @@ class OperationsController extends Controller {
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
-	{
+	public function actionCreate() {
 		$model=new Operations;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Operations']))
-		{
+		if(isset($_POST['Operations'])) {
 			$model->attributes=$_POST['Operations'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->date=date('Y-m-d H:i:s');
+			$model->summ*=100;
+			$obFromAccount=Accounts::getFromById($model->from_account_id);
+			$obToAccount=Accounts::getToById($model->to_account_id);
+			if(!$obFromAccount) {
+				$model->addError('from_account_id', 'Не найден исходный счёт');
+			}
+			if(!$obToAccount) {
+				$model->addError('to_account_id', 'Не найден счёт получатель');
+			}
+			if($model->validate()) {
+				if($obFromAccount->id==$obToAccount->id)
+					$model->addError('to_account_id','Счёт получатель не может соответствовать счёту отправителю');
+				if(!$obFromAccount->isEnoughAmount($model->summ))
+					$model->addError('summ', 'На исходном счёте на найдена искомая сумма');
+				if(!$model->hasErrors()) {
+					$obTransaction=Yii::app()->getDB()->beginTransaction();
+					try {
+						if($model->save()) {
+							$obFromAccount->lowerSumm($model->summ);
+							$obToAccount->raiseSumm($model->summ);
+							$obTransaction->commit();
+							$this->redirect(array('view','id'=>$model->id));
+						} else {
+							throw new CException('Can\'t save operation');
+						}
+					} catch (CException $e) {
+						$obTransaction->rollback();
+						$model->addError('title',$e->getMessage());
+					}
+				}
+			}
+			$model->summ/=100;
 		}
 
 		$this->render('create',array(
@@ -79,66 +74,16 @@ class OperationsController extends Controller {
 	}
 
 	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Operations']))
-		{
-			$model->attributes=$_POST['Operations'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-	}
-
-	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
-	{
+	public function actionIndex() {
+		$obCriteria=new CDbCriteria();
+		$obCriteria->with='account';
+		$obCriteria->addCondition('account.user_id='.Yii::app()->user->id);
 		$dataProvider=new CActiveDataProvider('Operations');
+		$dataProvider->setCriteria($obCriteria);
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
-		));
-	}
-
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Operations('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Operations']))
-			$model->attributes=$_GET['Operations'];
-
-		$this->render('admin',array(
-			'model'=>$model,
 		));
 	}
 
@@ -147,24 +92,10 @@ class OperationsController extends Controller {
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
-	{
+	public function loadModel($id) {
 		$model=Operations::model()->findByPk($id);
-		if($model===null)
+		if($model===null || $model->account->user_id!=Yii::app()->user->id)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
-	}
-
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='operations-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
 	}
 }

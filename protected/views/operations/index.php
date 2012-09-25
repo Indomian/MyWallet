@@ -7,12 +7,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create Operations', 'url'=>array('create')),
-	array('label'=>'Manage Operations', 'url'=>array('admin')),
+	array('label'=>'Добавить операцию', 'url'=>array('create')),
 );
 ?>
 
-<h1>Operations</h1>
+<h1>Операции</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

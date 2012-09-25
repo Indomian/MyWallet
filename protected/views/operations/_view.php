@@ -9,8 +9,12 @@
 	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('account_id')); ?>:</b>
-	<?php echo CHtml::encode($data->account_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('from_account_id')); ?>:</b>
+	<?php echo CHtml::encode($data->from_account_id); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('to_account_id')); ?>:</b>
+	<?php echo CHtml::encode($data->to_account_id); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('summ')); ?>:</b>

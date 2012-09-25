@@ -14,11 +14,15 @@
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
-
 	<div class="row">
-		<?php echo $form->labelEx($model,'account_id'); ?>
-		<?php echo $form->listBox($model,'account_id',CHtml::listData(Accounts::getMy(), 'id', 'title')); ?>
-		<?php echo $form->error($model,'account_id'); ?>
+		<?php echo $form->labelEx($model,'from_account_id'); ?>
+		<?php echo $form->dropDownList($model,'from_account_id',CHtml::listData(Accounts::getMyFrom(), 'id', 'title')); ?>
+		<?php echo $form->error($model,'from_account_id'); ?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'to_account_id'); ?>
+		<?php echo $form->dropDownList($model,'to_account_id',CHtml::listData(Accounts::getMyTo(), 'id', 'title')); ?>
+		<?php echo $form->error($model,'to_account_id'); ?>
 	</div>
 
 	<div class="row">
@@ -31,12 +35,6 @@
 		<?php echo $form->labelEx($model,'title'); ?>
 		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo $form->error($model,'title'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'date'); ?>
-		<?php echo $form->textField($model,'date'); ?>
-		<?php echo $form->error($model,'date'); ?>
 	</div>
 
 	<div class="row buttons">
