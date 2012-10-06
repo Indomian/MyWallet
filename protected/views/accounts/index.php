@@ -3,16 +3,16 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Accounts',
+	'Счета',
 );
 
 $this->menu=array(
-	array('label'=>'Create Accounts', 'url'=>array('create')),
-	array('label'=>'Manage Accounts', 'url'=>array('manage')),
+	array('label'=>'Добавить счёт', 'url'=>array('create')),
+	array('label'=>'Управлять счетами', 'url'=>array('manage')),
 );
 ?>
 
-<h1>Accounts</h1>
+<h1>Счета</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

@@ -35,7 +35,7 @@ class Operations extends CActiveRecord {
 		// will receive user inputs.
 		return array(
 			array('from_account_id, to_account_id, summ, title, date', 'required'),
-			array('from_account_id, to_account_id, summ', 'numerical', 'integerOnly'=>true),
+			array('from_account_id, to_account_id, summ', 'numerical'),
 			array('title', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

@@ -39,6 +39,12 @@
 		<?php echo $form->error($model,'date_operation'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'parent_id'); ?>
+		<?php echo $form->dropDownList($model,'parent_id',array_merge(array(''=>' -- '),CHtml::listData(Accounts::getMyAccountsTree(),'id','title')));?>
+		<?php echo $form->error($model,'parent_id');?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

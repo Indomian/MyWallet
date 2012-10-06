@@ -34,7 +34,13 @@ class Accounts extends CActiveRecord {
 	public function rules() {
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
-		return array( array('user_id, title, type, summ', 'required'), array('user_id, summ', 'numerical', 'integerOnly'=>true), array('title', 'length', 'max'=>255), array('type', 'length', 'max'=>6), array('date_operation', 'safe'),
+		return array(
+			array('user_id, title, type, summ', 'required'),
+			array('user_id, summ', 'numerical'),
+			array('parent_id','numerical'),
+			array('title', 'length', 'max'=>255),
+			array('type', 'length', 'max'=>6),
+			array('date_operation', 'safe'),
 		// The following rule is used by search().
 		// Please remove those attributes that should not be searched.
 		array('id, user_id, title, type, summ, date_operation', 'safe', 'on'=>'search'), );
@@ -46,14 +52,29 @@ class Accounts extends CActiveRecord {
 	public function relations() {
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array();
+		return array(
+			'children'=>array(
+				self::HAS_MANY,'Accounts',array('id'=>'parent_id')
+			),
+			'parent'=>array(
+				self::HAS_ONE,'Accounts','parent_id'
+			)
+		);
 	}
 
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
 	public function attributeLabels() {
-		return array('id'=>'ID', 'user_id'=>'User', 'title'=>'Title', 'type'=>'Type', 'summ'=>'Summ', 'date_operation'=>'Date Operation', );
+		return array(
+			'id'=>'ID',
+			'user_id'=>'Пользователь',
+			'title'=>'Наименование счёта',
+			'type'=>'Тип счёта',
+			'summ'=>'Сумма',
+			'date_operation'=>'Дата операции',
+			'parent_id'=>'Группа счетов',
+		);
 	}
 
 	/**
@@ -74,10 +95,21 @@ class Accounts extends CActiveRecord {
 	}
 
 	public function getTypes() {
-		return array('main'=>Yii::t('accountTypes', 'main'), 'normal'=>Yii::t('accountTypes', 'normal'), 'costs'=>Yii::t('accountTypes', 'costs'));
+		return array(
+			'main'=>Yii::t('accountTypes', 'main'),
+			'normal'=>Yii::t('accountTypes', 'normal'),
+			'costs'=>Yii::t('accountTypes', 'costs')
+		);
 	}
-	
+
+	public function reloadAccountSumm() {
+		if(time()-strtotime($this->date_operation)>86400) {
+
+		}
+	}
+
 	public function isEnoughAmount($amount) {
+		$this->reloadAccountSumm();
 		return $this->summ-$amount>0;
 	}
 		
@@ -113,6 +145,32 @@ class Accounts extends CActiveRecord {
 			return $arAccounts;
 		}
 		return array();
+	}
+
+	private function buildTree() {
+		$arAccounts=$this->children;
+		if(count($arAccounts)>0) {
+			foreach($arAccounts as $obAccount) {
+				$arResult[]=$obAccount;
+				$arResult=array_merge($arResult,$this->buildTree());
+			}
+		}
+		return $arAccounts;
+	}
+
+	public static function getMyAccountsTree() {
+		$arResult=array();
+		$arAccounts=self::model()->findAllByAttributes(array(
+			'user_id'=>Yii::app()->getUser()->getId(),
+			'parent_id'=>0
+		));
+		if(count($arAccounts)>0) {
+			foreach($arAccounts as $obAccount) {
+				$arResult[]=$obAccount;
+				$arResult=array_merge($arResult,$obAccount->buildTree());
+			}
+		}
+		return $arResult;
 	}
 	
 	public static function getCommonAccount() {

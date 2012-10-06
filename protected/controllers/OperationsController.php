@@ -34,7 +34,6 @@ class OperationsController extends Controller {
 		if(isset($_POST['Operations'])) {
 			$model->attributes=$_POST['Operations'];
 			$model->date=date('Y-m-d H:i:s');
-			$model->summ*=100;
 			$obFromAccount=Accounts::getFromById($model->from_account_id);
 			$obToAccount=Accounts::getToById($model->to_account_id);
 			if(!$obFromAccount) {
@@ -65,7 +64,6 @@ class OperationsController extends Controller {
 					}
 				}
 			}
-			$model->summ/=100;
 		}
 
 		$this->render('create',array(
