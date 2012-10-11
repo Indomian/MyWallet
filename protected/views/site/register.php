@@ -3,8 +3,7 @@
 /* @var $model Users */
 
 $this->breadcrumbs=array(
-    'Site'=>array('index'),
-    'Register',
+    'Регистрация',
 );
 
 $this->menu=array(
@@ -13,7 +12,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>Регстрация на сайте</h1>
+<h1>Регистрация на сайте</h1>
 
 <div class="form">
     <?php $form=$this->beginWidget('CActiveForm', array('id'=>'users-form','enableAjaxValidation'=>false)); ?>
