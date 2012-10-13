@@ -10,8 +10,5 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'Список операций', 'url'=>array('index')),
 );
-?>
 
-<h1>Добавить операцию</h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+echo $this->renderPartial('_form', array('model'=>$model));

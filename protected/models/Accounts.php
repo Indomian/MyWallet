@@ -135,6 +135,9 @@ class Accounts extends CActiveRecord {
 		return array();
 	}
 
+	/**
+	 * @return Accounts[]
+	 */
 	public static function getMyFrom() {
 		if (Yii::app()->getUser()->getId()>0) {
 			$arAccounts=self::model()->findAllByAttributes(array(
@@ -196,11 +199,11 @@ class Accounts extends CActiveRecord {
 			if($obFrom->type!='costs')
 				return $obFrom;
 		}
-		return null;
+		return NULL;
 	}
 	
 	public static function getToById($id) {
-		if($id<1) return null;
+		if($id<1) return NULL;
 		return self::getById($id);
 	}
 }

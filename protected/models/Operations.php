@@ -60,7 +60,8 @@ class Operations extends CActiveRecord {
 	public function attributeLabels() {
 		return array(
 			'id' => 'ID',
-			'account_id' => 'Счёт',
+			'from_account_id'=>'Со счёта',
+			'to_account_id'=>'На счёт',
 			'summ' => 'Сумма',
 			'title' => 'Описание',
 			'date' => 'Дата операции',

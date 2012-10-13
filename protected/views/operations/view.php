@@ -11,11 +11,8 @@ $this->menu=array(
 	array('label'=>'Список операций', 'url'=>array('index')),
 	array('label'=>'Добавить операцию', 'url'=>array('create')),
 );
-?>
 
-<h1>Просмотр операции о #<?php echo $model->id; ?></h1>
-
-<?php $this->widget('zii.widgets.CDetailView', array(
+$this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
@@ -25,4 +22,4 @@ $this->menu=array(
 		'title',
 		'date',
 	),
-)); ?>
+));

@@ -1,56 +1,60 @@
 <?php /* @var $this Controller */ ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="language" content="en" />
-
-	<!-- blueprint CSS framework -->
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
-	<!--[if lt IE 8]>
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
-	<![endif]-->
-
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
-
-	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-</head>
-
-<body>
-
-<div class="container" id="page">
-
-	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
-	</div><!-- header -->
-
-	<div id="mainmenu">
-		<?php $this->widget('zii.widgets.CMenu',array(
-			'items'=>array(
-				array('label'=>'Операции', 'url'=>array('/operations'),'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'Счета', 'url'=>array('/accounts'),'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'Авторизация', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-				array('label'=>'Регистрация', 'url'=>array('/site/register'),'visible'=>Yii::app()->user->isGuest),
-				array('label'=>'Выйти ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-			),
-		)); ?>
-	</div><!-- mainmenu -->
-	<?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
-			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
-	<?php endif?>
-
-	<?php echo $content; ?>
-
-	<div class="clear"></div>
-
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by BlaDe39.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
+<!DOCTYPE html >
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="language" content="ru" />
+		<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row-fluid">
+				<div class="navbar navbar-static-top">
+					<div class="navbar-inner">
+						<a class="brand" href="/"><?php echo CHtml::encode(Yii::app()->name); ?></a>
+						<?php $this->widget('zii.widgets.CMenu',array(
+							'htmlOptions'=>array(
+								'class'=>'nav'
+							),
+							'activateItems'=>'true',
+							'activeCssClass'=>'active',
+							'items'=>array(
+								array('label'=>'Операции', 'url'=>array('operations/index'),'visible'=>!Yii::app()->user->isGuest),
+								array('label'=>'Счета', 'url'=>array('accounts/index'),'visible'=>!Yii::app()->user->isGuest),
+								array('label'=>'Авторизация', 'url'=>array('site/login'), 'visible'=>Yii::app()->user->isGuest),
+								array('label'=>'Регистрация', 'url'=>array('site/register'),'visible'=>Yii::app()->user->isGuest),
+								array('label'=>'Выйти ('.Yii::app()->user->name.')', 'url'=>array('site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+							),
+						)); ?>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<?php if(isset($this->breadcrumbs)):?>
+					<?php $this->widget('zii.widgets.CBreadcrumbs', array(
+						'htmlOptions'=>array('class'=>'breadcrumb'),
+						'links'=>$this->breadcrumbs,
+					)); ?><!-- breadcrumbs -->
+				<?php endif?>
+			</div>
+			<div class="row-fluid">
+				<div class="span9"><?php echo $content; ?></div>
+			</div>
+			<div class="row-fluid">
+				<div class="container">
+					<div class="span5">
+						Copyright &copy; <?php echo date('Y'); ?> by BlaDe39.<br/>
+						All Rights Reserved.<br/>
+						<?php echo Yii::powered(); ?>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- Yandex.Metrika counter -->
 		<script type="text/javascript">
 			(function (d, w, c) {
@@ -74,9 +78,5 @@
 		</script>
 		<noscript><div><img src="//mc.yandex.ru/watch/17627431" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 		<!-- /Yandex.Metrika counter -->
-	</div><!-- footer -->
-
-</div><!-- page -->
-
-</body>
+	</body>
 </html>
