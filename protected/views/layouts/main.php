@@ -1,4 +1,4 @@
-<?php /* @var $this Controller */ ?>
+<?php /* @var $this Controller */?>
 <!DOCTYPE html >
 <html>
 	<head>
@@ -10,30 +10,33 @@
 		<script src="/js/bootstrap.min.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="/css/style.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="container">
-			<div class="row-fluid">
-				<div class="navbar navbar-static-top">
-					<div class="navbar-inner">
-						<a class="brand" href="/"><?php echo CHtml::encode(Yii::app()->name); ?></a>
-						<?php $this->widget('zii.widgets.CMenu',array(
-							'htmlOptions'=>array(
-								'class'=>'nav'
-							),
-							'activateItems'=>'true',
-							'activeCssClass'=>'active',
-							'items'=>array(
-								array('label'=>'Операции', 'url'=>array('operations/index'),'visible'=>!Yii::app()->user->isGuest),
-								array('label'=>'Счета', 'url'=>array('accounts/index'),'visible'=>!Yii::app()->user->isGuest),
-								array('label'=>'Авторизация', 'url'=>array('site/login'), 'visible'=>Yii::app()->user->isGuest),
-								array('label'=>'Регистрация', 'url'=>array('site/register'),'visible'=>Yii::app()->user->isGuest),
-								array('label'=>'Выйти ('.Yii::app()->user->name.')', 'url'=>array('site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-							),
-						)); ?>
-					</div>
-				</div>
+		<div class="navbar navbar-static-top">
+			<div class="navbar-inner">
+				<a class="brand" href="/"><?php echo CHtml::encode(Yii::app()->name); ?></a>
+				<?php $this->widget('zii.widgets.CMenu',array(
+				'htmlOptions'=>array(
+					'class'=>'nav'
+				),
+				'activateItems'=>true,
+				'activateParents'=>true,
+				'activeCssClass'=>'active',
+				'submenuHtmlOptions'=>array('style'=>'display:none;'),
+				'items'=>array(
+					array('label'=>'Операции', 'url'=>array('operations/index'),'visible'=>!Yii::app()->user->isGuest,'items'=>array(
+						array('url'=>array('operations/create'),'label'=>'Создать')
+					)),
+					array('label'=>'Счета', 'url'=>array('accounts/index'),'visible'=>!Yii::app()->user->isGuest),
+					array('label'=>'Авторизация', 'url'=>array('site/login'), 'visible'=>Yii::app()->user->isGuest),
+					array('label'=>'Регистрация', 'url'=>array('site/register'),'visible'=>Yii::app()->user->isGuest),
+					array('label'=>'Выйти ('.Yii::app()->user->name.')', 'url'=>array('site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+				),
+			)); ?>
 			</div>
+		</div>
+		<div class="container">
 			<div class="row-fluid">
 				<?php if(isset($this->breadcrumbs)):?>
 					<?php $this->widget('zii.widgets.CBreadcrumbs', array(
@@ -43,16 +46,12 @@
 				<?php endif?>
 			</div>
 			<div class="row-fluid">
-				<div class="span9"><?php echo $content; ?></div>
+				<?php echo $content; ?>
 			</div>
-			<div class="row-fluid">
-				<div class="container">
-					<div class="span5">
-						Copyright &copy; <?php echo date('Y'); ?> by BlaDe39.<br/>
-						All Rights Reserved.<br/>
-						<?php echo Yii::powered(); ?>
-					</div>
-				</div>
+		</div>
+		<div class="navbar navbar-fixed-bottom">
+			<div class="navbar-inner">
+				<p class="navbar-text" style="text-align: center;"><small>BlaDe39 - <?php echo date('Y'); ?>. <?php echo Yii::powered(); ?> Оформлено с использованием <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Twitter Bootstrap</a>. </small></p>
 			</div>
 		</div>
 		<!-- Yandex.Metrika counter -->

@@ -8,7 +8,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Список операций', 'url'=>array('index')),
+	array('label'=>'Список операций', 'url'=>array('operations/index')),
+	array('label'=>'Добавить операцию', 'url'=>array('operations/create')),
 );
 
 echo $this->renderPartial('_form', array('model'=>$model));

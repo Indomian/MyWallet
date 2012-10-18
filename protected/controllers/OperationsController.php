@@ -76,10 +76,13 @@ class OperationsController extends Controller {
 	 */
 	public function actionIndex() {
 		$obCriteria=new CDbCriteria();
-		$obCriteria->with='account';
-		$obCriteria->addCondition('account.user_id='.Yii::app()->user->id);
+		$obCriteria->with='to_account';
+		$obCriteria->addCondition('to_account.user_id='.Yii::app()->user->id);
 		$dataProvider=new CActiveDataProvider('Operations');
 		$dataProvider->setCriteria($obCriteria);
+		$dataProvider->pagination=array(
+			'pageSize'=>20,
+		);
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -92,7 +95,7 @@ class OperationsController extends Controller {
 	 */
 	public function loadModel($id) {
 		$model=Operations::model()->findByPk($id);
-		if($model===null || $model->account->user_id!=Yii::app()->user->id)
+		if($model===null || $model->to_account->user_id!=Yii::app()->user->id)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}

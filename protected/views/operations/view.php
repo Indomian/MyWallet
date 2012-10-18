@@ -8,16 +8,22 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Список операций', 'url'=>array('index')),
-	array('label'=>'Добавить операцию', 'url'=>array('create')),
+	array('label'=>'Список операций', 'url'=>array('operations/index')),
+	array('label'=>'Добавить операцию', 'url'=>array('operations/create')),
 );
 
 $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'from_account_id',
-		'to_account_id',
+		array(
+			'name'=>'from_account.title',
+			'label'=>$model->getAttributeLabel('from_account_id'),
+		),
+		array(
+			'name'=>'to_account.title',
+			'label'=>$model->getAttributeLabel('to_account_id'),
+		),
 		'summ',
 		'title',
 		'date',

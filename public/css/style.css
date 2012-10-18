@@ -1,0 +1,13 @@
+.container {
+    padding-bottom: 42px;
+}
+
+.navbar-static-top {
+    width:auto;
+    margin-bottom: 1em;
+}
+@media (max-width: 767px) {
+    /*body {
+        padding: 0;
+    }*/
+}

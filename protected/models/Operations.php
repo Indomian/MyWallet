@@ -5,10 +5,14 @@
  *
  * The followings are the available columns in table 'operations':
  * @property integer $id
- * @property integer $account_id
+ * @property integer $from_account_id
+ * @property integer $to_account_id
  * @property integer $summ
  * @property string $title
  * @property string $date
+ *
+ * @property Accounts $from_account
+ * @property Accounts $to_account
  */
 class Operations extends CActiveRecord {
 	/**
@@ -48,9 +52,12 @@ class Operations extends CActiveRecord {
 	 */
 	public function relations() {
 		return array(
-            'account'=>array(
-                CActiveRecord::BELONGS_TO,'Accounts','to_account_id'
-            )
+			'from_account'=>array(
+				CActiveRecord::BELONGS_TO,'Accounts','from_account_id'
+			),
+			'to_account'=>array(
+				CActiveRecord::BELONGS_TO,'Accounts','to_account_id'
+			),
 		);
 	}
 
@@ -80,7 +87,7 @@ class Operations extends CActiveRecord {
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('account_id',$this->account_id);
+		$criteria->compare('from_account_id',$this->from_account_id);
 		$criteria->compare('summ',$this->summ);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('date',$this->date,true);
