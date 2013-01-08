@@ -7,44 +7,23 @@ $this->pageTitle=Yii::app()->name . ' - Авторизация';
 $this->breadcrumbs=array(
 	'Авторизация',
 );
-?>
-
-<h1>Авторизация</h1>
-
-<p>Пожалуйста, укажите данные которые вы использовали при регистрации:</p>
-
-<div class="form">
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'login-form',
-	'enableClientValidation'=>true,
-	'clientOptions'=>array(
-		'validateOnSubmit'=>true,
-	),
-)); ?>
-
-	<p class="note">Поля с <span class="required">*</span> обязательны для заполнения.</p>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'username'); ?>
-		<?php echo $form->textField($model,'username'); ?>
-		<?php echo $form->error($model,'username'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'password'); ?>
-		<?php echo $form->passwordField($model,'password'); ?>
-		<?php echo $form->error($model,'password'); ?>
-	</div>
-
-	<div class="row rememberMe">
-		<?php echo $form->checkBox($model,'rememberMe'); ?>
-		<?php echo $form->label($model,'rememberMe'); ?>
-		<?php echo $form->error($model,'rememberMe'); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Войти'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-</div><!-- form -->
+CHtml::$errorCss='text-error';
+echo CHtml::openTag('div',array('class'=>'span12'));
+	$form=$this->beginWidget('CActiveForm', array('id'=>'login-form','enableClientValidation'=>true,'clientOptions'=>array('validateOnSubmit'=>true,)));
+	echo CHtml::tag('legend',array('class'=>'span12'),'Пожалуйста, укажите данные которые вы использовали при регистрации:');
+	if($model->hasErrors()) {
+		echo CHtml::tag('div',array('class'=>'span12'),$form->errorSummary($model,null,null, array('class'=>'alert alert-error')));
+	}
+	echo CHtml::openTag('div',array('class'=>'span5'));
+		echo $form->labelEx($model,'username',array('class'=>'span12'));
+		echo $form->textField($model,'username',array('class'=>'span12'));
+	echo CHtml::closeTag('div');
+	echo CHtml::openTag('div',array('class'=>'span5'));
+		echo $form->labelEx($model,'password',array('class'=>'span12'));
+		echo $form->passwordField($model,'password',array('class'=>'span12'));
+	echo CHtml::closeTag('div');
+	echo CHtml::tag('div',array('class'=>'span5'),CHtml::tag('label',array(),$form->checkBox($model,'rememberMe').' '.$model->getAttributeLabel('rememberMe')));
+	echo CHtml::tag('div',array('class'=>'span5'),CHtml::tag('button',array('class'=>'btn btn-primary'),'Войти'));
+	echo CHtml::tag('div',array('class'=>'span12'),'Поля отмеченные '.CHtml::tag('span',array('class'=>'required'),'*').' обязательны к заполнению.');
+	$this->endWidget();
+echo CHtml::closeTag('div');
