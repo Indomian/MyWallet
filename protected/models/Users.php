@@ -18,7 +18,7 @@ class Users extends CActiveRecord {
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
 	}
-	
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -47,12 +47,10 @@ class Users extends CActiveRecord {
 	 * @return array relational rules.
 	 */
 	public function relations() {
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
-            'accounts'=>array(
-                self::HAS_MANY,'Accounts','user_id'
-            )
+			'accounts'=>array(
+				self::HAS_MANY,'Accounts','user_id'
+			)
 		);
 	}
 
@@ -87,8 +85,8 @@ class Users extends CActiveRecord {
 			'criteria'=>$criteria,
 		));
 	}
-    
-    public static function genHash($string) {
-        return md5($string);
-    }
+
+	public static function genHash($string) {
+		return md5($string);
+	}
 }

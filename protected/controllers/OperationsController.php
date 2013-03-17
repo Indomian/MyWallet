@@ -30,7 +30,8 @@ class OperationsController extends Controller {
 	 */
 	public function actionCreate() {
 		$model=new Operations;
-
+		$model->date_str=date('d.m.Y');
+		$model->time_str=date('H:i:s');
 		if(isset($_POST['Operations'])) {
 			$model->attributes=$_POST['Operations'];
 			$model->date=date('Y-m-d H:i:s');
@@ -78,7 +79,17 @@ class OperationsController extends Controller {
 		$obCriteria=new CDbCriteria();
 		$obCriteria->with='to_account';
 		$obCriteria->addCondition('to_account.user_id='.Yii::app()->user->id);
-		$dataProvider=new CActiveDataProvider('Operations');
+		$dataProvider=new CActiveDataProvider('Operations',array(
+			'criteria'=>$obCriteria,
+			'pagination'=>array(
+				'pageSize'=>20
+			),
+			'sort'=>array(
+				'defaultOrder'=>array(
+					'date'=>CSort::SORT_DESC
+				)
+			)
+		));
 		$dataProvider->setCriteria($obCriteria);
 		$dataProvider->pagination=array(
 			'pageSize'=>20,
@@ -86,6 +97,20 @@ class OperationsController extends Controller {
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
+	}
+
+	public function actionReport() {
+		$obForm=new CommonReport();
+		$obForm->date_from=date('d.m.Y',strtotime('first day of this month'));
+		$obForm->date_to=date('d.m.Y');
+		$obResult=false;
+		if(Yii::app()->request->isPostRequest && isset($_POST['CommonReport'])) {
+			$obForm->attributes=$_POST['CommonReport'];
+		}
+		if($obForm->validate()) {
+			$obResult=$obForm->generate();
+		}
+		$this->render('report',array('model'=>$obForm,'list'=>$obResult));
 	}
 
 	/**

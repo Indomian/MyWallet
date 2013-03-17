@@ -11,8 +11,5 @@ $this->menu=array(
 	array('label'=>'Список счетов', 'url'=>array('index')),
 	array('label'=>'Управлять счетами', 'url'=>array('manager')),
 );
-?>
 
-<h1>Создание счёта</h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+echo $this->renderPartial('_form', array('model'=>$model)); ?>

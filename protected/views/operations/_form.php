@@ -42,6 +42,15 @@ $form=$this->beginWidget('CActiveForm', array('id'=>'operations-form','enableAja
 	echo CHtml::closeTag('div');
 
 	echo CHtml::openTag('div',array('class'=>'row-fluid'));
+		echo CHtml::openTag('div',array('class'=>'span6'));
+			echo $form->labelEx($model,'date_str').$form->dateField($model,'date_str',array('class'=>'span12'));
+		echo CHtml::closeTag('div');
+		echo CHtml::openTag('div',array('class'=>'span6'));
+			echo $form->labelEx($model,'time_str').$form->textField($model,'time_str',array('class'=>'span12'));
+		echo CHtml::closeTag('div');
+	echo CHtml::closeTag('div');
+
+	echo CHtml::openTag('div',array('class'=>'row-fluid'));
 		echo CHtml::openTag('div',array('class'=>'span12'));
 			echo CHtml::tag('button',array('class'=>'btn btn-primary'),'Добавить');
 			echo CHtml::tag('div',array('class'=>'note pull-right'),'Поля отмеченные '.CHtml::tag('span',array('class'=>'required'),'*').' обязательны к заполнению.');

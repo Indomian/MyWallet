@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'Список операций', 'url'=>array('operations/index')),
 	array('label'=>'Добавить операцию', 'url'=>array('operations/create')),
+	array('label'=>'Отчёт за период','url'=>array('operations/report'))
 );
 
 $this->widget('zii.widgets.grid.CGridView', array(

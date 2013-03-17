@@ -1,35 +1,32 @@
 <?php
 /* @var $this UsersController */
 /* @var $model Users */
+/* @var $form CActiveForm */
 
+$this->pageTitle=Yii::app()->name.' - Регистрация';
 $this->breadcrumbs=array(
     'Регистрация',
 );
 
-$this->menu=array(
-    array('label'=>'List Users', 'url'=>array('index')),
-    array('label'=>'Manage Users', 'url'=>array('admin')),
-);
-?>
-
-<h1>Регистрация на сайте</h1>
-
-<div class="form">
-    <?php $form=$this->beginWidget('CActiveForm', array('id'=>'users-form','enableAjaxValidation'=>false)); ?>
-        <p class="note">Поля отмеченные <span class="required">*</span> обязательны к заполнению.</p>
-        <?php echo $form->errorSummary($model); ?>
-        <div class="row">
-            <?php echo $form->labelEx($model,'login'); ?>
-            <?php echo $form->textField($model,'login',array('size'=>60,'maxlength'=>255)); ?>
-            <?php echo $form->error($model,'login'); ?>
-        </div>
-        <div class="row">
-            <?php echo $form->labelEx($model,'password'); ?>
-            <?php echo $form->passwordField($model,'password',array('size'=>32,'maxlength'=>32)); ?>
-            <?php echo $form->error($model,'password'); ?>
-        </div>
-        <div class="row buttons">
-            <?php echo CHtml::submitButton('Зарегистрироваться'); ?>
-        </div>
-    <?php $this->endWidget(); ?>
-</div><!-- form -->
+$arR=array('class'=>'row-fluid');
+echo CHtml::tag('div',$arR,CHtml::tag('legend',array('class'=>'span12'),'Регистрация на сайте'));
+echo CHtml::tag('div',$arR,CHtml::tag('p',array('class'=>'span12'),'Укажите ваш логин и пароль. Указанные данные будут
+необходимы для повторной авторизации на сайте.'));
+$form=$this->beginWidget('CActiveForm', array('id'=>'users-form','enableAjaxValidation'=>false));
+if($model->hasErrors()) {
+	echo CHtml::tag('div',$arR,CHtml::tag('div',array('class'=>'span12'),$form->errorSummary($model,null,null, array('class'=>'alert alert-error'))));
+}
+echo CHtml::openTag('div',$arR);
+	echo CHtml::openTag('div',array('class'=>'span6'));
+		echo $form->labelEx($model,'login',array('class'=>'span12','maxlength'=>255));
+		echo $form->textField($model,'login',array('class'=>'span12'));
+	echo CHtml::closeTag('div');
+	echo CHtml::openTag('div',array('class'=>'span6'));
+		echo $form->labelEx($model,'password',array('class'=>'span12'));
+		echo $form->passwordField($model,'password',array('class'=>'span12'));
+	echo CHtml::closeTag('div');
+echo CHtml::closeTag('div');
+echo CHtml::openTag('div',$arR);
+echo CHtml::tag('div',array('class'=>'span6'),CHtml::tag('button',array('class'=>'btn btn-primary'),'Зарегистрироваться'));
+echo CHtml::tag('div',array('class'=>'span6'),'Поля отмеченные <span class="required">*</span> обязательны к заполнению.');
+$this->endWidget();

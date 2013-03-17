@@ -15,6 +15,8 @@
  * @property Accounts $to_account
  */
 class Operations extends CActiveRecord {
+	public $date_str;
+	public $time_str;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -35,14 +37,12 @@ class Operations extends CActiveRecord {
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules() {
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
 		return array(
 			array('from_account_id, to_account_id, summ, title, date', 'required'),
 			array('from_account_id, to_account_id, summ', 'numerical'),
 			array('title', 'length', 'max'=>255),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+			array('date_str','match','pattern'=>'#^\d\d\.\d\d\.\d{4,4}$#','message'=>'Неверный формат даты'),
+			array('time_str ','match','pattern'=>'#^\d\d:\d\d(:\d\d)?$#','message'=>'Неверный формат времени'),
 			array('id, from_account_id, to_account_id, summ, title, date', 'safe', 'on'=>'search'),
 		);
 	}
@@ -72,18 +72,38 @@ class Operations extends CActiveRecord {
 			'summ' => 'Сумма',
 			'title' => 'Описание',
 			'date' => 'Дата операции',
+			'date_str' => 'Дата операции',
+			'time_str' => 'Время операции'
 		);
+	}
+
+	/**
+	 * Переформатирует поля даты времени, если они были заполнены
+	 * @return bool|void
+	 */
+	public function beforeSave() {
+		if(parent::beforeSave()) {
+			if($this->isNewRecord) {
+				if($this->date_str!='') {
+					if($this->time_str!='') {
+						$this->date=date('Y-m-d H:i:s',strtotime($this->date_str.' '.$this->time_str));
+					} else {
+						$this->date=date('Y-m-d H:i:s',strtotime($this->date_str.' 12:00'));
+					}
+				} else {
+					$this->date=date('Y-m-d H:i:s');
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
+	public function search() {
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
