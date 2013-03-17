@@ -41,7 +41,7 @@ class Operations extends CActiveRecord {
 			array('from_account_id, to_account_id, summ, title, date', 'required'),
 			array('from_account_id, to_account_id, summ', 'numerical'),
 			array('title', 'length', 'max'=>255),
-			array('date_str','match','pattern'=>'#^\d\d\.\d\d\.\d{4,4}$#','message'=>'Неверный формат даты'),
+			array('date_str','match','pattern'=>'#^\d{4,4}-\d\d\-\d\d$#','message'=>'Неверный формат даты'),
 			array('time_str ','match','pattern'=>'#^\d\d:\d\d(:\d\d)?$#','message'=>'Неверный формат времени'),
 			array('id, from_account_id, to_account_id, summ, title, date', 'safe', 'on'=>'search'),
 		);

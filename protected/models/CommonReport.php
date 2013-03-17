@@ -18,7 +18,7 @@ class CommonReport extends CModel {
 	public function rules() {
 		return array(
 			array('date_from,date_to','required'),
-			array('date_from,date_to','match','pattern'=>'#^\d\d\.\d\d\.\d\d\d\d$#','message'=>'Неверный формат даты от-до')
+			array('date_from,date_to','match','pattern'=>'#^\d{4,4}-\d\d-\d\d$#','message'=>'Неверный формат даты от-до')
 		);
 	}
 
@@ -30,8 +30,8 @@ class CommonReport extends CModel {
 			$obCommand=Yii::app()->db->createCommand($query);
 			$arList=$obCommand->queryAll(true,array(
 				':userid'=>Yii::app()->user->id,
-				':datefrom'=>date('Y-m-d H:i:s',strtotime($this->date_from)),
-				':dateto'=>date('Y-m-d H:i:s',strtotime($this->date_to))
+				':datefrom'=>date('Y-m-d 00:00:00',strtotime($this->date_from)),
+				':dateto'=>date('Y-m-d 23:59:59',strtotime($this->date_to))
 			));
 			return new CArrayDataProvider($arList,array(
 				'pagination'=>array(
