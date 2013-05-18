@@ -30,7 +30,7 @@ class OperationsController extends Controller {
 	 */
 	public function actionCreate() {
 		$model=new Operations;
-		$model->date_str=date('d.m.Y');
+		$model->date_str=date('Y-m-d');
 		$model->time_str=date('H:i:s');
 		if(isset($_POST['Operations'])) {
 			$model->attributes=$_POST['Operations'];
@@ -101,8 +101,8 @@ class OperationsController extends Controller {
 
 	public function actionReport() {
 		$obForm=new CommonReport();
-		$obForm->date_from=date('d.m.Y',strtotime('first day of this month'));
-		$obForm->date_to=date('d.m.Y');
+		$obForm->date_from=date('Y-m-d',strtotime('first day of this month'));
+		$obForm->date_to=date('Y-m-d');
 		$obResult=false;
 		if(Yii::app()->request->isPostRequest && isset($_POST['CommonReport'])) {
 			$obForm->attributes=$_POST['CommonReport'];

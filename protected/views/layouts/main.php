@@ -24,10 +24,10 @@
 				'activateParents'=>true,
 				'activeCssClass'=>'active',
 				'submenuHtmlOptions'=>array('style'=>'display:none;'),
+				'encodeLabel'=>false,
 				'items'=>array(
-					array('label'=>'Операции', 'url'=>array('operations/index'),'visible'=>!Yii::app()->user->isGuest,'items'=>array(
-						array('url'=>array('operations/create'),'label'=>'Создать')
-					)),
+					array('label'=>'Операции', 'url'=>array('operations/index'),'visible'=>!Yii::app()->user->isGuest),
+					array('url'=>array('operations/create'),'label'=>'<i class="icon-plus"></i>','visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Счета', 'url'=>array('accounts/index'),'visible'=>!Yii::app()->user->isGuest),
 					array('label'=>'Авторизация', 'url'=>array('site/login'), 'visible'=>Yii::app()->user->isGuest),
 					array('label'=>'Регистрация', 'url'=>array('site/register'),'visible'=>Yii::app()->user->isGuest),

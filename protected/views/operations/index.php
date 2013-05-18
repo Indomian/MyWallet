@@ -20,7 +20,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		'class'=>'',
 	),
 	'columns'=>array(
-		'id',
 		array(
 			'header'=>$dataProvider->model->getAttributeLabel('from_account_id'),
 			'name'=>'from_account.title',
